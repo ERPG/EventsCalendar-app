@@ -1,14 +1,14 @@
 <div class="calendar">
   <div class="calendar-navs">
-    <div class="month-nav">
-      <button (click)="prevMonth()">&lt;</button>
-      <span class="p4">{{ currentDate.format('MMMM') }}</span>
-      <button (click)="nextMonth()">&gt;</button>
-    </div>
     <div class="year-nav">
-      <button (click)="prevYear()">&lt;</button>
-      <span>{{ currentDate.format('YYYY') }}</span>
-      <button (click)="nextYear()">&gt;</button>
+      <i class="fas fa-caret-left" (click)="prevYear()"></i>
+      <span class="CurrentYear">{{ currentDate.format('YYYY') }}</span>
+      <i class="fas fa-caret-right" (click)="nextYear()"></i>
+    </div>
+    <div class="month-nav">
+      <i class="fas fa-caret-left" (click)="prevMonth()"></i>
+      <span class="CurrentMonth">{{ currentDate.format('MMMM') }}</span>
+      <i class="fas fa-caret-right" (click)="nextMonth()"></i>
     </div>
   </div>
   <div class="month-grid">
@@ -20,11 +20,15 @@
     <div class="weeks">
       <div *ngFor="let week of weeks" class="week">
         <ng-container *ngFor="let day of week">
+          <div></div>
           <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mDate)">
             <span class="date-text">{{ day.mDate.date() }}</span>
           </div>
           <div class="week-date enabled" *ngIf="isSelectedMonth(day.mDate)" (click)="selectDate(day, $event)" [ngClass]="{ today: day.today, selected: day.selected }">
             <span class="date-text">{{ day.mDate.date() }}</span>
+            <div *ngFor="let value of eventPoint">
+              <span *ngIf="day.mDate.format('DD/MM/YYYY') === value" class="event-signal"></span>
+            </div>
           </div>
         </ng-container>
       </div>

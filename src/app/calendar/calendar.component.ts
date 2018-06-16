@@ -10,12 +10,14 @@ import * as _ from 'lodash';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit, OnChanges {
-  public events = [];
+  public eventsArray = [];
   public eventDate: any;
+  public eventPoint = [];
+  public eventFormated: any;
   public selectedDate: any;
   public event: any;
   public currentDate = moment();
-  public dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  public dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   public weeks: CalendarDates[][] = [];
   public sortedDates: CalendarDates[] = [];
 
@@ -45,8 +47,11 @@ export class CalendarComponent implements OnInit, OnChanges {
       .getCalendarEvents('../../assets/events.json',
       (results) => {
         for (const event of results.events) {
-          this.events.push(event);
+          this.eventsArray.push(event);
         }
+        this.eventsArray.forEach(elem => {
+          this.eventPoint.push(moment(new Date(elem.occurred_on * 1000)).format('DD/MM/YYYY'));
+        });
       }, (error) => {
         console.log(error);
       });
@@ -83,13 +88,7 @@ export class CalendarComponent implements OnInit, OnChanges {
   // Modal functionality
   showModal(date: CalendarDates, event: any) {
     this.event = '';
-    this.events.forEach(elem => {
-      const eventFormated = moment(new Date(elem.occurred_on * 1000)).format('DD/MM/YYYY');
-      console.log(eventFormated);
-      if (eventFormated === this.selectedDate) {
-        this.event = elem;
-      }
-    });
+    this.formatDates(this.eventsArray);
     const modal = document.getElementById('calendar-modal');
     document.addEventListener('click', (evt) => {
       if (evt.target !== event.target) {
@@ -100,6 +99,17 @@ export class CalendarComponent implements OnInit, OnChanges {
         modal.style.visibility = 'visible';
         modal.style.top = offsetTop + 35 + 'px';
         modal.style.left = offsetLeft + 'px';
+      }
+    });
+  }
+
+  // formatt function
+  formatDates(array: any) {
+    array.forEach(elem => {
+      this.eventFormated = '';
+      this.eventFormated = moment(new Date(elem.occurred_on * 1000)).format('DD/MM/YYYY');
+      if (this.eventFormated === this.selectedDate) {
+        this.event = elem;
       }
     });
   }

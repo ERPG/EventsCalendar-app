@@ -1,9 +1,8 @@
-$dayBase: 30px;
-$cloud: grey;
+$dayBase: 50px;
 $base: 5px;
 $concrete: lightgrey;
-$seafoam: #71EEB8;
-$white: white;
+$seafoam: #16a1e7;
+$white: #F8F8F8;
 $light-blue-grey: lightblue;
 $teal: #008080;
 
@@ -11,13 +10,15 @@ $teal: #008080;
   display: block;
   width: $dayBase * 7;
   margin: 0 auto;
+  margin-top: 150px;
+  font-family: 'Kanit', sans-serif;
 
   * {
     box-sizing: border-box;
   }
 
   .calendar-navs {
-    background-color: $cloud;
+    background-color: white;
   }
 
   .month-nav {
@@ -25,6 +26,22 @@ $teal: #008080;
     display: flex;
     flex-direction: row;
     justify-content: space-between;
+    i {
+      cursor: pointer;
+      font-size: 25px;
+      color: $seafoam;
+    }
+    .fa-caret-left {
+      margin-left: 10px;
+    }
+    .fa-caret-right {
+      margin-right: 10px;
+    }
+    .CurrentMonth {
+      color: #AAAAAA;
+      font-size: 18px;
+      font-weight: 600;
+    }
   }
 
   .year-nav {
@@ -33,19 +50,38 @@ $teal: #008080;
     flex-direction: row;
     justify-content: space-between;
     font-family: 'Montserrat';
+    i {
+      cursor: pointer;
+      font-size: 25px;
+      color: $seafoam;
+    }
+    .fa-caret-left {
+      margin-left: 10px;
+    }
+    .fa-caret-right {
+      margin-right: 10px;
+    }
+    .CurrentYear {
+      color: #AAAAAA;
+      font-size: 18px;
+      font-weight: 600;
+    }
   }
 
   .month-grid {
     .day-names {
       display: flex;
       flex-direction: row;
-      background: $concrete;
+      color: #AAAAAA;
+      font-size: 15px;
+      font-weight: 600;
       border-bottom-right-radius: 3px;
       border-bottom-left-radius: 3px;
     }
     .weeks {
       display: flex;
       flex-direction: column;
+      background-color: rgba(248,248,248, 0.2);
     }
     .week {
       display: flex;
@@ -65,6 +101,7 @@ $teal: #008080;
     .week-date {
       height: $dayBase;
       position: relative;
+      border: 1px solid lightgrey;
 
       .date-text {
         z-index: 10;
@@ -88,30 +125,44 @@ $teal: #008080;
       &.enabled {
         cursor: pointer;
         &:hover {
-          &:after {
-            background-color: $seafoam;
+          background-color: $seafoam;
+          span.date-text {
+          color: $white;
           }
         }
       }
       &.selected {
-        color: $white;
-        &:after {
-          background-color: $teal;
+        background-color: $seafoam;
+        span.date-text {
+          color: $white;
         }
         &:hover {
-          &:after {
-            background-color: $teal;
-          }
+          background-color: $seafoam;
         }
       }
 
       &.disabled {
         color: $light-blue-grey;
       }
+      .event-signal {
+        position: absolute;
+        display: inline-block;
+        top: 35px;
+        left: 22px;
+        font-size: 50px;
+        background-color: black;
+        height: 5px;
+        width: 5px;
+        border-radius: 10px;
+      }
     }
 
     .today {
       font-weight: bold;
+      span.date-text {
+        font-size: 12px;
+        color: $seafoam;
+      }
     }
   }
 }
