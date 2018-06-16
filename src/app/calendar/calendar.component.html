@@ -1,26 +1,29 @@
 <div class="calendar">
   <div class="calendar-navs">
-    <div class="year-nav">
-      <i class="fas fa-caret-left" (click)="prevYear()"></i>
-      <span class="CurrentYear">{{ currentDate.format('YYYY') }}</span>
-      <i class="fas fa-caret-right" (click)="nextYear()"></i>
-    </div>
     <div class="month-nav">
       <i class="fas fa-caret-left" (click)="prevMonth()"></i>
       <span class="CurrentMonth">{{ currentDate.format('MMMM') }}</span>
       <i class="fas fa-caret-right" (click)="nextMonth()"></i>
     </div>
+    <div class="year-nav">
+      <i class="fas fa-caret-left" (click)="prevYear()"></i>
+      <span class="CurrentYear">{{ currentDate.format('YYYY') }}</span>
+      <i class="fas fa-caret-right" (click)="nextYear()"></i>
+    </div>
   </div>
   <div class="month-grid">
-    <div class="day-names">
-      <div *ngFor="let name of dayNames" class="day-name p9">
-        {{ name }}
+    <div class="week-days">
+      <div class="ring-left"></div>
+      <div class="day-names">
+        <div *ngFor="let name of dayNames" class="day-name p9">
+          {{ name }}
+        </div>
       </div>
+      <div class="ring-right"></div>
     </div>
     <div class="weeks">
       <div *ngFor="let week of weeks" class="week">
         <ng-container *ngFor="let day of week">
-          <div></div>
           <div class="week-date disabled" *ngIf="!isSelectedMonth(day.mDate)">
             <span class="date-text">{{ day.mDate.date() }}</span>
           </div>
@@ -40,10 +43,12 @@
 <div id="calendar-modal">
   <div *ngIf="event else content">
     <div class="calendar-modal_texts">
-      <p>description: {{event.description}}</p>
+      <p class="calendar-modal_description">Description:
+        <span>{{event.description}}</span>
+      </p>
     </div>
   </div>
   <ng-template #content>
-    <p>No events scheduled!</p>
+    <p class="else-statement">No events scheduled!</p>
   </ng-template>
 </div>
