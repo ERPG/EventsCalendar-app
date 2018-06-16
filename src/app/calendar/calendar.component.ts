@@ -55,6 +55,7 @@ export class CalendarComponent implements OnInit, OnChanges {
       }, (error) => {
         console.log(error);
       });
+    return this.eventsArray;
   }
 
   // date checkers
