@@ -34,14 +34,12 @@
 
 <!-- Modal -->
 <div id="calendar-modal">
-  <div *ngIf="">
+  <div *ngIf="event else content">
     <div class="calendar-modal_texts">
-      <p>hora: description:</p>
+      <p>description: {{event.description}}</p>
     </div>
   </div>
   <ng-template #content>
-    <div class="calendar-modal_texts">
-      <p>No events scheduled!</p>
-    </div>
+    <p>No events scheduled!</p>
   </ng-template>
 </div>

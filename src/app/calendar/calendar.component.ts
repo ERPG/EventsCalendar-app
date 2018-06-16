@@ -10,11 +10,14 @@ import * as _ from 'lodash';
   styleUrls: ['./calendar.component.scss']
 })
 export class CalendarComponent implements OnInit, OnChanges {
-  public results: any;
-  currentDate = moment();
-  dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-  weeks: CalendarDates[][] = [];
-  sortedDates: CalendarDates[] = [];
+  public events = [];
+  public eventDate: any;
+  public selectedDate: any;
+  public event: any;
+  public currentDate = moment();
+  public dayNames = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+  public weeks: CalendarDates[][] = [];
+  public sortedDates: CalendarDates[] = [];
 
   @Input() selectedDates: CalendarDates[] = [];
   @Output() onSelectDate = new EventEmitter<CalendarDates>();
@@ -36,17 +39,19 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
   }
 
-  // Get events method
+  // Get scheduled events method
   getScheduledEvents() {
     this._calendarEventsService
       .getCalendarEvents('../../assets/events.json',
       (results) => {
-        console.log(results);
-        this.results = results.content;
+        for (const event of results.events) {
+          this.events.push(event);
+        }
       }, (error) => {
         console.log(error);
       });
   }
+
   // date checkers
   isToday(date: moment.Moment): boolean {
     return moment().isSame(moment(date), 'day');
@@ -63,19 +68,27 @@ export class CalendarComponent implements OnInit, OnChanges {
   }
 
   selectDate(date: CalendarDates, event): void {
+    this.selectedDate = date.mDate.format('DD/MM/YYYY');
     const selectedElements = document.getElementsByClassName('selected');
     for (let i = 0; i < selectedElements.length; i++) {
-      console.log(selectedElements[i]);
       selectedElements[i].classList.remove('selected');
     }
     event.target.className += ' selected';
-    this.showModal(event);
+    this.showModal(date, event);
 
     // this.onSelectDate.emit(date);
   }
 
   // Modal functionality
-  showModal(event: any) {
+  showModal(date: CalendarDates, event: any) {
+    this.event = '';
+    this.events.forEach(elem => {
+      const eventFormated = moment(new Date(elem.occurred_on * 1000)).format('DD/MM/YYYY');
+      console.log(eventFormated);
+      if (eventFormated === this.selectedDate) {
+        this.event = elem;
+      }
+    });
     const modal = document.getElementById('calendar-modal');
     document.addEventListener('click', (evt) => {
       if (evt.target !== event.target) {
