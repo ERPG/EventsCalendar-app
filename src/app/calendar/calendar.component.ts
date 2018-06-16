@@ -20,7 +20,7 @@ export class CalendarComponent implements OnInit, OnChanges {
   public sortedDates: CalendarDates[] = [];
 
   @Input() selectedDates: CalendarDates[] = [];
-  @Output() onSelectDate = new EventEmitter<CalendarDates>();
+  // @Output() onSelectDate = new EventEmitter<CalendarDates>();
 
   constructor(private _calendarEventsService: CalendarEventsService) { }
 
@@ -28,7 +28,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     this.generateCalendar();
     this.getScheduledEvents();
   }
-
+  // Detect changes
   ngOnChanges(changes: SimpleChanges): void {
     if (changes.selectedDates &&
       changes.selectedDates.currentValue &&
@@ -67,6 +67,7 @@ export class CalendarComponent implements OnInit, OnChanges {
     return moment(date).isSame(this.currentDate, 'month');
   }
 
+  // Check date
   selectDate(date: CalendarDates, event): void {
     this.selectedDate = date.mDate.format('DD/MM/YYYY');
     const selectedElements = document.getElementsByClassName('selected');
@@ -94,8 +95,8 @@ export class CalendarComponent implements OnInit, OnChanges {
       if (evt.target !== event.target) {
         modal.style.visibility = 'hidden';
       } else {
-        const offsetTop = event.target.offsetTop;
-        const offsetLeft = event.target.offsetLeft;
+        const offsetTop = event.target.classList.contains('week-date') ? event.target.offsetTop : event.target.parentNode.offsetTop;
+        const offsetLeft = event.target.classList.contains('week-date') ? event.target.offsetLeft : event.target.parentNode.offsetLeft;
         modal.style.visibility = 'visible';
         modal.style.top = offsetTop + 35 + 'px';
         modal.style.left = offsetLeft + 'px';
