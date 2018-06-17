@@ -1,5 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
+import * as moment from 'moment';
+import { CalendarDates } from './../abstraction/calendarDates.service';
 import { CalendarEventsService } from 'app/services/calendarEvents.service';
 import { CalendarComponent } from './calendar.component';
 
@@ -82,4 +84,65 @@ describe('CalendarComponent', () => {
     expect(elt[6].innerText).toEqual('SAT');
     expect(elt[0].innerText).toEqual('SUN');
   });
+
+  it('should display modal on click', () => {
+    const date = {
+      today: component.isToday(moment()),
+      selected: component.isSelected(moment()),
+      mDate: moment(),
+    };
+    const styleElt = fixture.nativeElement.querySelector('div.week-date.enabled');
+    const styleElt2 = fixture.nativeElement.querySelector('div#calendar-modal');
+
+    // Create Event
+    const event = document.createEvent('Event');
+    event.initEvent('mouseEvent', true, true);
+
+    // add Event listeners to the elements
+    styleElt.addEventListener('mouseEvent', function (e) { }, false);
+    styleElt.dispatchEvent(event);
+
+    // Execute Event in the component
+    component.showModal(date, event);
+
+    fixture.detectChanges();
+    // expect(styleElt2.style.visibility).toContain('visible');
+  });
+
+  it('should return true if today', () => {
+    const today = moment();
+
+    fixture.detectChanges();
+    expect(component.isToday(today)).toBeTruthy();
+  });
+
+  it('should return true if current month', () => {
+    const today = moment();
+
+    fixture.detectChanges();
+    expect(component.isSelectedMonth(today)).toBeTruthy();
+  });
+
+  it('Should return the previus month from today', () => {
+    const elt = fixture.nativeElement.querySelector('span.CurrentMonth');
+    component.currentDate = moment();
+
+    // click event
+    component.prevMonth();
+
+    fixture.detectChanges();
+    expect(elt.innerText).toContain('May');
+  });
+
+  it('Should return the next month from today', () => {
+    const elt = fixture.nativeElement.querySelector('span.CurrentMonth');
+    component.currentDate = moment();
+
+    // click event
+    component.nextMonth();
+
+    fixture.detectChanges();
+    expect(elt.innerText).toContain('July');
+  });
+
 });

@@ -9,7 +9,7 @@ import * as _ from 'lodash';
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.scss']
 })
-export class CalendarComponent implements OnInit, OnChanges {
+export class CalendarComponent implements OnInit {
   public eventsArray = [];
   public eventDate: any;
   public eventPoint = [];
@@ -19,10 +19,9 @@ export class CalendarComponent implements OnInit, OnChanges {
   public currentDate = moment();
   public dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   public weeks: CalendarDates[][] = [];
-  public sortedDates: CalendarDates[] = [];
+  // public sortedDates: CalendarDates[] = [];
 
   @Input() selectedDates: CalendarDates[] = [];
-  // @Output() onSelectDate = new EventEmitter<CalendarDates>();
 
   constructor(private _calendarEventsService: CalendarEventsService) { }
 
@@ -30,16 +29,19 @@ export class CalendarComponent implements OnInit, OnChanges {
     this.generateCalendar();
     this.getScheduledEvents();
   }
+
   // Detect changes
-  ngOnChanges(changes: SimpleChanges): void {
-    if (changes.selectedDates &&
-      changes.selectedDates.currentValue &&
-      changes.selectedDates.currentValue.length > 1) {
-      // sort on date changes for better performance when range checking
-      this.sortedDates = _.sortBy(changes.selectedDates.currentValue, (m: CalendarDates) => m.mDate.valueOf());
-      this.generateCalendar();
-    }
-  }
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   if (changes.selectedDates &&
+  //     changes.selectedDates.currentValue &&
+  //     changes.selectedDates.currentValue.length > 1) {
+  //     // sort on date changes for better performance when range checking
+  //     this.sortedDates = _.sortBy(changes.selectedDates.currentValue, (m: CalendarDates) => m.mDate.valueOf());
+  //     console.log(this.sortedDates);
+  //     console.log(changes);
+  //     this.generateCalendar();
+  //   }
+  // }
 
   // Get scheduled events method
   getScheduledEvents() {
@@ -82,8 +84,6 @@ export class CalendarComponent implements OnInit, OnChanges {
     }
     event.target.className += ' selected';
     this.showModal(date, event);
-
-    // this.onSelectDate.emit(date);
   }
 
   // Modal functionality
