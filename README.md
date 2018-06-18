@@ -1,4 +1,5 @@
 # EventsCalendarApp
+Calendar demo application to manage your personal events made with Angular 4. You can find examples of Unit Tests, Angular animations and a http request demo. Keep in mind that the http service used in this application is NOT the new httpClient version, is the previous one, but both are compatibles with any version of angular from the CLI.
 
 This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 1.0.1.
 

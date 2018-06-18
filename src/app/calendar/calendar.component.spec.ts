@@ -91,21 +91,22 @@ describe('CalendarComponent', () => {
       selected: component.isSelected(moment()),
       mDate: moment(),
     };
-    const styleElt = fixture.nativeElement.querySelector('div.week-date.enabled');
-    const styleElt2 = fixture.nativeElement.querySelector('div#calendar-modal');
+    const styleElt = fixture.nativeElement.querySelector('span.date-text');
+    const styleElt2 = fixture.nativeElement.querySelectorAll('div#calendar-modal');
 
-    // Create Event
+    // // Create Event
     const event = document.createEvent('Event');
     event.initEvent('mouseEvent', true, true);
 
-    // add Event listeners to the elements
+    // // add Event listeners to the elements
     styleElt.addEventListener('mouseEvent', function (e) { }, false);
     styleElt.dispatchEvent(event);
 
     // Execute Event in the component
-    component.showModal(date, event);
+    component.selectDate(date, event);
 
     fixture.detectChanges();
+
     // expect(styleElt2.style.visibility).toContain('visible');
   });
 
@@ -143,6 +144,33 @@ describe('CalendarComponent', () => {
 
     fixture.detectChanges();
     expect(elt.innerText).toContain('July');
+  });
+  it('Should return previous year', () => {
+    const elt = fixture.nativeElement.querySelector('span.CurrentYear');
+    component.currentDate = moment();
+
+    // click event
+    component.prevYear();
+
+    fixture.detectChanges();
+    expect(elt.innerText).toContain('2017');
+  });
+
+  it('Should return next year', () => {
+    const elt = fixture.nativeElement.querySelector('span.CurrentYear');
+    component.currentDate = moment();
+
+    component.nextYear();
+
+    fixture.detectChanges();
+    expect(elt.innerText).toContain('2019');
+  });
+
+  it('Should return an object from today´s moment', () => {
+    const today = moment();
+
+    fixture.detectChanges();
+    expect(typeof component.fillDates(today)).toBe('object');
   });
 
 });

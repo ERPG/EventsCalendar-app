@@ -1,4 +1,5 @@
-import { Component, EventEmitter, Input, OnChanges, OnInit, Output, SimpleChanges } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
+import { trigger, state, style, animate, transition } from '@angular/animations';
 import { CalendarDates } from './../abstraction/calendarDates.service';
 import { CalendarEventsService } from 'app/services/calendarEvents.service';
 import * as moment from 'moment';
@@ -7,7 +8,19 @@ import * as _ from 'lodash';
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
-  styleUrls: ['./calendar.component.scss']
+  styleUrls: ['./calendar.component.scss'],
+  animations: [
+    trigger('visible', [
+      state('0', style({
+        opacity: 0
+      })),
+      state('1', style({
+        opacity: 1
+      })),
+      transition('0 => 1', animate(300)),
+      transition('1 => 0', animate(300))
+    ])
+  ]
 })
 export class CalendarComponent implements OnInit {
   public eventsArray = [];
@@ -19,7 +32,7 @@ export class CalendarComponent implements OnInit {
   public currentDate = moment();
   public dayNames = ['SUN', 'MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
   public weeks: CalendarDates[][] = [];
-  // public sortedDates: CalendarDates[] = [];
+  public load: any;
 
   @Input() selectedDates: CalendarDates[] = [];
 
@@ -29,19 +42,6 @@ export class CalendarComponent implements OnInit {
     this.generateCalendar();
     this.getScheduledEvents();
   }
-
-  // Detect changes
-  // ngOnChanges(changes: SimpleChanges): void {
-  //   if (changes.selectedDates &&
-  //     changes.selectedDates.currentValue &&
-  //     changes.selectedDates.currentValue.length > 1) {
-  //     // sort on date changes for better performance when range checking
-  //     this.sortedDates = _.sortBy(changes.selectedDates.currentValue, (m: CalendarDates) => m.mDate.valueOf());
-  //     console.log(this.sortedDates);
-  //     console.log(changes);
-  //     this.generateCalendar();
-  //   }
-  // }
 
   // Get scheduled events method
   getScheduledEvents() {
@@ -83,23 +83,28 @@ export class CalendarComponent implements OnInit {
       selectedElements[i].classList.remove('selected');
     }
     event.target.className += ' selected';
+
+    // Display Modal
     this.showModal(date, event);
   }
 
   // Modal functionality
   showModal(date: CalendarDates, event: any) {
+    this.load = 0;
     this.event = '';
     this.formatDates(this.eventsArray);
     const modal = document.getElementById('calendar-modal');
     document.addEventListener('click', (evt) => {
       if (evt.target !== event.target) {
         modal.style.visibility = 'hidden';
+        this.load = 0;
       } else {
         const offsetTop = event.target.classList.contains('week-date') ? event.target.offsetTop : event.target.parentNode.offsetTop;
         const offsetLeft = event.target.classList.contains('week-date') ? event.target.offsetLeft : event.target.parentNode.offsetLeft;
         modal.style.visibility = 'visible';
         modal.style.top = offsetTop + 35 + 'px';
         modal.style.left = offsetLeft + 'px';
+        this.load = 1;
       }
     });
   }
@@ -156,6 +161,7 @@ export class CalendarComponent implements OnInit {
     this.weeks = weeks;
   }
 
+  // Get dates
   fillDates(currentMoment: moment.Moment): CalendarDates[] {
     const firstOfMonth = moment(currentMoment).startOf('month').day();
     const firstDayOfGrid = moment(currentMoment).startOf('month').subtract(firstOfMonth, 'days');

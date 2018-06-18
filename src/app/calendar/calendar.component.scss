@@ -1,10 +1,8 @@
 $dayBase: 50px;
 $base: 5px;
-$concrete: lightgrey;
 $seafoam: #16a1e7;
 $white: #F8F8F8;
 $light-blue-grey: lightblue;
-$teal: #008080;
 
 .calendar {
   display: block;
@@ -197,16 +195,10 @@ $teal: #008080;
         &:hover {
           background-color: #E8E8E8;
           border: 1px solid $seafoam;
-          span.date-text {
-          //color: $white;
-          }
         }
       }
       &.selected {
         background-color: #E8E8E8;
-        span.date-text {
-          //color: $white;
-        }
         &:hover {
           background-color:	#E8E8E8;
         }
@@ -238,14 +230,14 @@ $teal: #008080;
   }
 }
 
-// Modal Styles
+// ========== Modal Styles ========== //
 
 #calendar-modal {
   position: absolute;
   margin-top: 25px;
   width: 125px;
   height: auto;
-  visibility: hidden;
+  opacity: 0;
   background-color: #fff;
   padding: 5px;
   margin: 0px;
@@ -265,6 +257,7 @@ $teal: #008080;
     margin: -1px;
   }
 }
+
 #calendar-modal::after {
   content: ' ';
   position: absolute;

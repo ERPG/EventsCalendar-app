@@ -1,3 +1,4 @@
+<!-- Calendar -->
 <div class="calendar">
   <div class="calendar-navs">
     <div class="month-nav">
@@ -40,7 +41,7 @@
 </div>
 
 <!-- Modal -->
-<div id="calendar-modal">
+<div id="calendar-modal" [@visible]="load ? 1 : 0">
   <div *ngIf="event else content">
     <div class="calendar-modal_texts">
       <p class="calendar-modal_description">Description:
