@@ -1,5 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { Component, Input } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import * as moment from 'moment';
 import { CalendarDates } from './../abstraction/calendarDates.service';
 import { CalendarEventsService } from 'app/services/calendarEvents.service';
@@ -36,6 +37,9 @@ describe('CalendarComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [CalendarComponent],
+      imports: [
+        BrowserAnimationsModule
+      ],
       providers: [
         { provide: CalendarEventsService, useClass: CalendarEventsServiceStub }
       ]
